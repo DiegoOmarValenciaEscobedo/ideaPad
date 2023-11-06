@@ -1,39 +1,36 @@
 import React from "react";
-import FileOptions from "./FileOptions";
+import FileOptions from "../logic/FileOptions";
+import OptionFunctions from "../logic/OptionFunctions";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useGlobalContext } from "../logic/GlobalContext";
 import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
 import { deviceHeight, statusBarHeight, deviceWidth } from "../logic/GlobalConstants";
 
-
-export default function modalOption({isVisible, setIsVisible}) {
+export default function modalOption() {
 
     const { openFile, save } = FileOptions();
     const { globalState } = useGlobalContext();
+    const { handleModalOption, handleNewFile } = OptionFunctions();
     const getBorderColor = {borderColor: globalState.fontColor}
     const getBackgroundColor = {backgroundColor: globalState.backgroundColor}
     const getFontStyle = {fontSize: globalState.fontSize, color: globalState.fontColor}
-
-    function toggleModal(){
-        setIsVisible(!isVisible);
-    }
 
     return (
         <Modal
             animationType="fade"
             transparent={true}
-            visible={isVisible}
-            onRequestClose={() => {setIsVisible(false);}}
+            visible={globalState.isOptionModalVisible}
+            onRequestClose={handleModalOption}
         >
             <View style={[styles.container, getBackgroundColor]}>
                 <View style={[styles.title, getBorderColor]}>
-                    <TouchableOpacity onPress={toggleModal} style={styles.button}>
+                    <TouchableOpacity onPress={handleModalOption} style={styles.button}>
                         <Icon name="times" size={5+globalState.fontSize} color={globalState.fontColor} />
                     </TouchableOpacity>
                     <Text style={getFontStyle}>Archivo</Text>
                 </View>
                 {
-                    globalState.path ? 
+                    globalState.name ? 
                         <TouchableOpacity onPress={save} style={[styles.title, getBorderColor]}> 
                             <Text style={getFontStyle}>Guardar</Text>
                             <Icon name="save" size={globalState.fontSize} color={globalState.fontColor} />
@@ -48,13 +45,9 @@ export default function modalOption({isVisible, setIsVisible}) {
                     <Text style={getFontStyle}>Abrir</Text>
                     <Icon name="folder-open" size={globalState.fontSize} color={globalState.fontColor} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{}} style={[styles.title, getBorderColor]}>
+                <TouchableOpacity onPress={handleNewFile} style={[styles.title, getBorderColor]}>
                     <Text style={getFontStyle}>Nuevo</Text>
                     <Icon name="file" size={globalState.fontSize} color={globalState.fontColor} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{}} style={[styles.title, getBorderColor]}>
-                    <Text style={getFontStyle}>Propiedades</Text>
-                    <Icon name="info-circle" size={globalState.fontSize} color={globalState.fontColor} />
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -70,7 +63,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         width: deviceWidth * 0.5,
         marginTop: statusBarHeight,
-        height: deviceHeight * 0.3,
+        height: deviceHeight * 0.25,
     },
     title:{
         width:'95%',

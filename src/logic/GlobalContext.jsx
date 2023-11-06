@@ -7,7 +7,7 @@ export const GlobalProvider = ({ children }) => {
   // Global state
   let [globalState, setGlobalState] = useState({
     // Display state
-    text: '',
+    text: null,
     fontSize: 15,
     // Personalization state
     darkMode: false,
@@ -17,8 +17,13 @@ export const GlobalProvider = ({ children }) => {
     secondColor: '#FAA31B',
     backgroundColor: '#FFFFFF',
     // path state
-    path: null,
+    name: null,
     save: false,
+    //modals
+    isNameModalVisible: false,
+    isConfigModalVisible: false,
+    isOptionModalVisible: false,
+    isNewModalVisible: false,
 
   });
 

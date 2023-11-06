@@ -1,28 +1,32 @@
-import React, {useState} from "react";
+import React from "react";
+import ModalNew from "./ModalNew"
+import ModalName from "./ModalName";
 import ModalOption from "./ModalOption";
 import ModalConfig from "./ModalConfig";
 import image from "../../assets/images/Header.png";
 import Icon from 'react-native-vector-icons/Ionicons';
-import { headerHeight, deviceWidth} from "../logic/GlobalConstants";
+import OptionFunctions from "../logic/OptionFunctions";
 import { useGlobalContext } from "../logic/GlobalContext";
+import { headerHeight, deviceWidth} from "../logic/GlobalConstants";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 
 
 export default function Header() {
     const { globalState } = useGlobalContext();
-    const [configModal, setConfigModal] = useState(false);
-    const [optionModal, setOptionModal] = useState(false);
+    const { handleModalConfig, handleModalOption } = OptionFunctions();
     const getBackgroundColor = {backgroundColor: globalState.fontColor}
 
     return (
         <View style={styles.container}>
-            <ModalConfig isVisible={configModal} setIsVisible={setConfigModal}/>
-            <ModalOption isVisible={optionModal} setIsVisible={setOptionModal}/>
-            <TouchableOpacity onPress={()=>{setConfigModal(true)}} style={[styles.button, getBackgroundColor]}>
+            <ModalNew/>
+            <ModalName/>
+            <ModalConfig/>
+            <ModalOption/>
+            <TouchableOpacity onPress={handleModalConfig} style={[styles.button, getBackgroundColor]}>
                 <Icon name="build" size={globalState.fontSize} color={globalState.backgroundColor} />
             </TouchableOpacity>
             <Image source={image} style={styles.image} />
-            <TouchableOpacity onPress={()=>{setOptionModal(true)}} style={[styles.button, getBackgroundColor]}>
+            <TouchableOpacity onPress={handleModalOption} style={[styles.button, getBackgroundColor]}>
                 <Icon name="document-outline" size={globalState.fontSize} color={globalState.backgroundColor} />
             </TouchableOpacity>
         </View>

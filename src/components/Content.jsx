@@ -1,12 +1,16 @@
 import React from "react";
+import OptionFunctions from "../logic/OptionFunctions";
 import { useGlobalContext } from "../logic/GlobalContext";
 import { displayHeight, deviceWidth } from "../logic/GlobalConstants";
 import { View, StyleSheet, TextInput, ScrollView } from "react-native";
 
 export default function Content() {
-    const { globalState, setGlobalState } = useGlobalContext();
+
+    const { globalState } = useGlobalContext();
+    const {handleTextChange} = OptionFunctions();
     const getBackgroundColor = {backgroundColor: globalState.color}
     getFontSize = {fontSize: globalState.fontSize}
+
     return (
         <View style={[styles.container, getBackgroundColor]}>
             <ScrollView>
@@ -15,7 +19,7 @@ export default function Content() {
                     multiline={true}
                     placeholder="Escribe tu nota aquí..."
                     value={globalState.text}
-                    onChangeText={(text) => {setGlobalState({...globalState, text: text})}}
+                    onChangeText={(text) => handleTextChange(text)}
                 />
             </ScrollView>
         </View>
