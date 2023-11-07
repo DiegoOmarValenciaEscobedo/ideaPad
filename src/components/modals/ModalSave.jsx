@@ -1,16 +1,16 @@
 import React from "react";
-import FileOptions from "../logic/FileOptions";
-import OptionFunctions from "../logic/OptionFunctions";
+import FileOptions from "../../logic/FileOptions";
+import OptionFunctions from "../../logic/OptionFunctions";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useGlobalContext } from "../logic/GlobalContext";
-import { deviceHeight, deviceWidth } from "../logic/GlobalConstants";
+import { useGlobalContext } from "../../logic/GlobalContext";
+import { deviceHeight, deviceWidth } from "../../logic/GlobalConstants";
 import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
 
 export default function modalOption() {
 
     const { save } = FileOptions();
     const { globalState } = useGlobalContext();
-    const { handleModalNew } = OptionFunctions();
+    const { handleSaveFile, handleModalSave, handleNoSave } = OptionFunctions();
 
     const getFontStyle = {fontSize: globalState.fontSize}
     const getTitleColor = {backgroundColor: globalState.color}
@@ -21,8 +21,8 @@ export default function modalOption() {
         <Modal
             animationType="fade"
             transparent={true}
-            visible={globalState.isNewModalVisible}
-            onRequestClose={handleModalNew}
+            visible={globalState.isSaveModalVisible}
+            onRequestClose={handleModalSave}
         >
             <View style={[styles.container, getBackgroundColor]}>
                 <View style={[styles.title, getTitleColor]}>
@@ -30,10 +30,10 @@ export default function modalOption() {
                     <Text style={[styles.titleText, getFontStyle]}>No has guardado el archivo actual ¿Quieres guardarlo?</Text>
                 </View>
                 <View style={[styles.buttonContainer]}>
-                    <TouchableOpacity onPress={handleModalNew} style={[styles.button, getButtonColor]}>
+                    <TouchableOpacity onPress={handleNoSave} style={[styles.button, getButtonColor]}>
                         <Text style={{color:globalState.backgroundColor}}>No</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={save} style={[styles.button, getTitleColor]}>
+                    <TouchableOpacity onPress={handleSaveFile} style={[styles.button, getTitleColor]}>
                         <Text style={{color:globalState.fontColor}}>Si</Text>
                     </TouchableOpacity>
                 </View>

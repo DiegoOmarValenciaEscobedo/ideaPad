@@ -1,15 +1,16 @@
 import React from "react";
+import { deviceWidth } from "../logic/GlobalConstants";
 import OptionFunctions from "../logic/OptionFunctions";
 import { useGlobalContext } from "../logic/GlobalContext";
-import { displayHeight, deviceWidth } from "../logic/GlobalConstants";
 import { View, StyleSheet, TextInput, ScrollView } from "react-native";
 
 export default function Content() {
 
     const { globalState } = useGlobalContext();
     const {handleTextChange} = OptionFunctions();
-    const getBackgroundColor = {backgroundColor: globalState.color}
+
     getFontSize = {fontSize: globalState.fontSize}
+    const getBackgroundColor = {backgroundColor: globalState.color}
 
     return (
         <View style={[styles.container, getBackgroundColor]}>
@@ -29,13 +30,12 @@ export default function Content() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: displayHeight*0.7,
-        width: deviceWidth * 0.95,
+        padding: 10,
+        elevation: 5,
+        marginBottom: 10,
         borderRadius: 15,
         marginHorizontal: 20,
-        padding: 10,
-        marginBottom: 10,
-        elevation: 5,
+        width: deviceWidth * 0.9,
     },
     textArea: {
         color: "black",

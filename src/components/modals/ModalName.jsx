@@ -1,16 +1,14 @@
 import React from "react";
-import FileOptions from "../logic/FileOptions";
-import OptionFunctions from "../logic/OptionFunctions";
+import OptionFunctions from "../../logic/OptionFunctions";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useGlobalContext } from "../logic/GlobalContext";
-import { deviceHeight, deviceWidth } from "../logic/GlobalConstants";
+import { useGlobalContext } from "../../logic/GlobalContext";
+import { deviceHeight, deviceWidth } from "../../logic/GlobalConstants";
 import { View, StyleSheet, Text, Modal, TouchableOpacity, TextInput } from "react-native";
 
 export default function modalOption() {
 
-    const { save } = FileOptions();
-    const { handleModalName } = OptionFunctions();
     const { globalState, setGlobalState } = useGlobalContext();
+    const { handleModalName, handleSaveName } = OptionFunctions();
 
     const getFontStyle = {fontSize: globalState.fontSize}
     const getTitleColor = {backgroundColor: globalState.color}
@@ -41,7 +39,7 @@ export default function modalOption() {
                     <TouchableOpacity onPress={handleModalName} style={[styles.button, getButtonColor]}>
                         <Text style={{color:globalState.backgroundColor}}>Cancelar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={save} style={[styles.button, getTitleColor]}>
+                    <TouchableOpacity onPress={handleSaveName} style={[styles.button, getTitleColor]}>
                         <Text style={{color:globalState.fontColor}}>Guardar</Text>
                     </TouchableOpacity>
                 </View>

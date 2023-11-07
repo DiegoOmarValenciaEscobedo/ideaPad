@@ -1,16 +1,15 @@
 import React from "react";
-import FileOptions from "../logic/FileOptions";
-import OptionFunctions from "../logic/OptionFunctions";
+import OptionFunctions from "../../logic/OptionFunctions";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useGlobalContext } from "../logic/GlobalContext";
+import { useGlobalContext } from "../../logic/GlobalContext";
 import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
-import { deviceHeight, statusBarHeight, deviceWidth } from "../logic/GlobalConstants";
+import { deviceHeight, statusBarHeight, deviceWidth } from "../../logic/GlobalConstants";
 
 export default function modalOption() {
 
-    const { openFile, save } = FileOptions();
     const { globalState } = useGlobalContext();
-    const { handleModalOption, handleNewFile } = OptionFunctions();
+    const { handleModalOption, handleNewFile, handleSaveFile, handleModalFiles, handleOpenFile } = OptionFunctions();
+
     const getBorderColor = {borderColor: globalState.fontColor}
     const getBackgroundColor = {backgroundColor: globalState.backgroundColor}
     const getFontStyle = {fontSize: globalState.fontSize, color: globalState.fontColor}
@@ -29,19 +28,11 @@ export default function modalOption() {
                     </TouchableOpacity>
                     <Text style={getFontStyle}>Archivo</Text>
                 </View>
-                {
-                    globalState.name ? 
-                        <TouchableOpacity onPress={save} style={[styles.title, getBorderColor]}> 
-                            <Text style={getFontStyle}>Guardar</Text>
-                            <Icon name="save" size={globalState.fontSize} color={globalState.fontColor} />
-                        </TouchableOpacity>
-                    : 
-                        <TouchableOpacity onPress={save} style={[styles.title, getBorderColor]}>
-                            <Text style={getFontStyle}>Guardar como</Text>
-                            <Icon name="save" size={globalState.fontSize} color={globalState.fontColor} />
-                        </TouchableOpacity>
-                }
-                <TouchableOpacity onPress={openFile} style={[styles.title, getBorderColor]}>
+                <TouchableOpacity onPress={handleSaveFile} style={[styles.title, getBorderColor]}> 
+                    { globalState.name ? <Text style={getFontStyle}>Guardar</Text> : <Text style={getFontStyle}>Guardar Como</Text>}
+                    <Icon name="save" size={globalState.fontSize} color={globalState.fontColor} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleOpenFile} style={[styles.title, getBorderColor]}>
                     <Text style={getFontStyle}>Abrir</Text>
                     <Icon name="folder-open" size={globalState.fontSize} color={globalState.fontColor} />
                 </TouchableOpacity>

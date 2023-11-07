@@ -1,10 +1,12 @@
-import React from "react";
+import FileOptions from "./FileOptions";
 import { useGlobalContext } from "./GlobalContext";
 
 export default function OptionFunctions() {
 
-    const { globalState, setGlobalState } = useGlobalContext();
+    const {getFile, saveFile} = FileOptions();
+    const { globalState, setGlobalState, files, setFiles } = useGlobalContext();
 
+    // Config functions
     function handleDarkMode(){
         newGlobalState = globalState;
         newGlobalState.darkMode = !globalState.darkMode;
@@ -26,20 +28,19 @@ export default function OptionFunctions() {
         setGlobalState({...newGlobalState});
     }
 
-    function handleNewFile(){
+    // Modal functions
+    function handleModalFiles(){
         newGlobalState = globalState;
-        if(globalState.save){
-            newGlobalState.text = null;
-            newGlobalState.name = null;
-            newGlobalState.save = false;
-            newGlobalState.isOptionModalVisible = false;
-            setGlobalState({...newGlobalState});
-        }else{
-            newGlobalState.isNewModalVisible = true;
-            newGlobalState.isNameModalVisible = false;
-            newGlobalState.isOptionModalVisible = false;
-            setGlobalState({...newGlobalState});
-        }
+        newGlobalState.isFilesModalVisible = !globalState.isFilesModalVisible;
+        newGlobalState.isOptionModalVisible = !globalState.isOptionModalVisible;
+        setGlobalState({...newGlobalState});
+    }
+
+    function handleModalSave(){
+        newGlobalState = globalState;
+        newGlobalState.isSaveModalVisible = !globalState.isSaveModalVisible;
+        newGlobalState.isOptionModalVisible = !globalState.isOptionModalVisible;
+        setGlobalState({...newGlobalState});
     }
 
     function handleModalConfig(){
@@ -54,27 +55,123 @@ export default function OptionFunctions() {
         setGlobalState({...newGlobalState});
     }
 
-    function handleModalNew(){
-        newGlobalState = globalState;
-        newGlobalState.isNewModalVisible = !globalState.isNewModalVisible;
-        setGlobalState({...newGlobalState});
-    }
-
     function handleModalName(){
         newGlobalState = globalState;
         newGlobalState.isNameModalVisible = !globalState.isNameModalVisible;
         setGlobalState({...newGlobalState});
     }
 
+    function handleModalNotification(){
+        newGlobalState = globalState;
+        newGlobalState.isNotificationModalVisible = !globalState.isNotificationModalVisible;
+        setGlobalState({...newGlobalState});
+    }
+
+    // File functions
+    function checkSave(){
+        if(!globalState.save){
+            newGlobalState = globalState;
+            newGlobalState.isSaveModalVisible = true;
+            newGlobalState.isOptionModalVisible = false;
+            setGlobalState({...newGlobalState});
+            return false;
+        }
+        return true;
+    }
+
+    function handleNoSave(){
+        newGlobalState = globalState;
+        newGlobalState.save = true;
+        setGlobalState({...newGlobalState});
+        handleModalSave();
+    }
+
+    function handleOpenFile(){
+        if(checkSave()){
+            handleModalFiles();
+        }
+    }
+
+    async function handleLoadFile(name){
+        const text = await getFile(name);
+        newGlobalState = globalState;
+        newGlobalState.text = text;
+        newGlobalState.name = name;
+        newGlobalState.save = true;
+        newGlobalState.icon = true;
+        newGlobalState.isFilesModalVisible = false;
+        newGlobalState.isNotificationModalVisible = true;
+        newGlobalState.message = 'Se cargo el archivo: '+ name;
+        setGlobalState({...newGlobalState});
+    }
+
+
+    function handleNewFile(){
+        newGlobalState = globalState;
+        if(globalState.save){
+            newGlobalState.text = null;
+            newGlobalState.name = null;
+            newGlobalState.save = true;
+            newGlobalState.isOptionModalVisible = false;
+            setGlobalState({...newGlobalState});
+        }else{
+            newGlobalState.isSaveModalVisible = true;
+            newGlobalState.isOptionModalVisible = false;
+            setGlobalState({...newGlobalState});
+        }
+    }
+
+    function handleSaveFile(){
+        if(globalState.name){
+            newGlobalState = globalState;
+            const name = globalState.name.split('.').pop();
+            if(name !== 'txt') newGlobalState.name = globalState.name + '.txt';
+            newGlobalState.save = true;
+            newGlobalState.icon = true;
+            newGlobalState.isSaveModalVisible = false;
+            newGlobalState.message = 'Se guardo el archivo: '+ globalState.name;
+            setGlobalState({...newGlobalState});
+            saveFile(globalState.name);
+            if (!files.includes(globalState.name)) {
+                setFiles([...files, globalState.name]);
+            }
+            handleModalNotification();
+        }else{
+            handleModalName();
+        }
+    }
+
+    function handleSaveName(){
+        newGlobalState = globalState;
+        if(globalState.name){
+            newGlobalState.isNameModalVisible = false;
+            setGlobalState({...newGlobalState});
+            handleSaveFile();
+        }else{
+            newGlobalState.icon=false;
+            newGlobalState.message='Nombre no valido';
+            setGlobalState({...newGlobalState});
+            handleModalNotification();
+        }
+
+    }
+
     return {
+        handleNoSave,
         handleNewFile,
+        handleOpenFile,
+        handleSaveFile,
+        handleLoadFile,
+        handleSaveName,
         handleDarkMode,
         handleModalName,
+        handleModalSave,
         handleSizeChange,
+        handleModalFiles,
         handleTextChange,
         handleModalOption,
         handleModalConfig,
-        handleModalNew,
+        handleModalNotification,
     };
 
 }

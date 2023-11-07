@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
-import MainScreen from './src/screens/MainScreen';
+import FileScreen from './src/screens/FileScreen';
 import { GlobalProvider } from './src/logic/GlobalContext';
 
 export default function App() {
   return (
     <GlobalProvider>
-      <MainScreen />
+      <FileScreen />
     </GlobalProvider>
   );
 }

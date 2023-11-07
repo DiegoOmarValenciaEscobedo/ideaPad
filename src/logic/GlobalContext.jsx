@@ -18,17 +18,24 @@ export const GlobalProvider = ({ children }) => {
     backgroundColor: '#FFFFFF',
     // path state
     name: null,
-    save: false,
+    save: true,
     //modals
+    isSaveModalVisible: false,
     isNameModalVisible: false,
+    isFilesModalVisible: false,
     isConfigModalVisible: false,
     isOptionModalVisible: false,
-    isNewModalVisible: false,
+    isNotificationModalVisible: false,
+    //mesages
+    icon: false,
+    message: null,
 
   });
 
+  const [files, setFiles] = useState([]);
+
   return (
-    <GlobalContext.Provider value={{ globalState, setGlobalState }}>
+    <GlobalContext.Provider value={{ globalState, setGlobalState, files, setFiles }}>
       {children}
     </GlobalContext.Provider>
   );

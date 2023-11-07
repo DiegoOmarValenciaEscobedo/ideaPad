@@ -1,11 +1,11 @@
 import React from "react";
-import SizeOption from "./SizeOption";
-import DarkModeSwitch from "./DarkModeSwitch";
-import OptionFunctions from "../logic/OptionFunctions";
+import SizeOption from "../SizeOption";
+import DarkModeSwitch from "../DarkModeSwitch";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useGlobalContext } from "../logic/GlobalContext";
+import OptionFunctions from "../../logic/OptionFunctions";
+import { useGlobalContext } from "../../logic/GlobalContext";
 import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
-import { deviceHeight, statusBarHeight, deviceWidth } from "../logic/GlobalConstants";
+import { deviceHeight, statusBarHeight, deviceWidth } from "../../logic/GlobalConstants";
 
 
 export default function modalConfig() {
@@ -18,10 +18,10 @@ export default function modalConfig() {
 
     return (
         <Modal
-            animationType="fade"
             transparent={true}
-            visible={globalState.isConfigModalVisible}
+            animationType="fade"
             onRequestClose={handleModalConfig}
+            visible={globalState.isConfigModalVisible}
         >
             <View style={[styles.container, getBackgroundColor]}>
                 <View style={[styles.title, getBorderColor]}>
@@ -30,8 +30,9 @@ export default function modalConfig() {
                         <Icon name="times" size={5+globalState.fontSize} color={globalState.fontColor} />
                     </TouchableOpacity>
                 </View>
-                <DarkModeSwitch/>
+
                 <SizeOption/>
+                <DarkModeSwitch/>
             </View>
         </Modal>
     )
@@ -51,9 +52,9 @@ const styles = StyleSheet.create({
     title:{
         width:'95%',
         padding: 10,
+        alignItems: "center",
         flexDirection: "row",
         borderBottomWidth: 1,
-        alignItems: "center",
         justifyContent: "space-between",
     },
 })

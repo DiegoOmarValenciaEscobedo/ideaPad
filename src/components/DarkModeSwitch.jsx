@@ -13,24 +13,26 @@ export default function DarkModeSwitch(){
 
     return(
         <OptionContainer>
-            {
-                globalState.darkMode ?
-                    <View style={styles.title}>
-                        <Icon name="moon" size={globalState.fontSize}/>
-                        <Text>Modo Noche</Text>
-                    </View>
-                :
-                    <View style={styles.title}>
-                        <Icon name="sunny" size={globalState.fontSize}/>
-                        <Text>Modo Claro</Text>
-                    </View>
-            }
+            <View style={styles.title}>
+                {
+                    globalState.darkMode ?
+                        <>
+                            <Icon name="moon" size={globalState.fontSize}/>
+                            <Text>Modo Noche</Text>
+                        </>
+                    :
+                        <>
+                            <Icon name="sunny" size={globalState.fontSize}/>
+                            <Text>Modo Claro</Text>
+                        </>
+                }
+            </View>
             <View style={styles.container}>
                 <Switch
-                    trackColor={{ false: globalState.backgroundColor, true: globalState.backgroundColor }}
-                    thumbColor={globalState.thirdColor}
-                    onValueChange={handleDarkMode}
                     value={globalState.darkMode}
+                    onValueChange={handleDarkMode}
+                    thumbColor={globalState.thirdColor}
+                    trackColor={{ false: globalState.backgroundColor, true: globalState.backgroundColor }}
                 />
             </View>
         </OptionContainer>
